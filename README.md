@@ -1,10 +1,10 @@
-##WARSZTATY Orkiestracja kontenerów z Kubernetes Open Source Day 2017
+##**Warsztaty** Orkiestracja kontenerów z Kubernetes Open Source Day 2017
 
 Repozytorium przchowujące konfigurację środowiska warsztatowego
 na potrzeby warsztatów Orkiestracja kontenerów z Kubernetes prowadzonych
 w trakcie Open Source Day 2017
 
-####Przygotowanie
+###Przygotowanie
 Zaloguj się na host master swojego klastra Kubernetes:
 	-FQDN:
 		Każdemu użytkownikowi zostal przydzielony osobny klaster.
@@ -14,14 +14,14 @@ Zaloguj się na host master swojego klastra Kubernetes:
 			-Login: userkubelabb<NUMER> 
 	-[Klucz prywatny](https://github.com) - hasło zostanie przekazane przez instruktora
 
-##Ćwiczenie
+###Ćwiczenie
 Zaloguj się do serwera pełniącego role mastera w klastrze Kubernetes:
 
 ```
 ssh userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/id_rsa
 ```
 
-###Przygotuj środowisko do pracy:
+####Przygotuj środowisko do pracy:
 
 ```
 echo "source <(kubectl completion bash)" >> ~/.bashrc
@@ -31,65 +31,67 @@ cd ~/warsztaty
 git clone https://github.com/rhalaczek/KubernetesOpenSourceDay2017 
 ```
 
-przygotowanie UI do wystawienia na świat
-na serwerze master klastra:
+Przygotuj interfejs webowy
+Na serwerze master klastra:
 
 ```
 kubectl proxy --port=8443 &
 exit
 ```
 
-na lokalnej maszynie
+Na lokalnej maszynie
 
 ```
 ssh -L 2222:localhost:8443 -N userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/id_rsa &
 ```
 
-uruchomienie przeglądarki na localhost :
+Uruchom przeglądarkę :
 http://localhost:2222/ui
 
-###Rozpocznij ćwiczenie
+####Rozpocznij ćwiczenie
 
-ponowne logowanie do serwera pełniącego role mastera w klastrze Kubernetes:
+#####Instalacja instancji bazy danych MySQL:
+
+Ponownie zaloguj do serwera pełniącego role mastera w klastrze Kubernetes:
 
 ```
 ssh userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/id_rsa
 ```
 
-dodanie persistent volumes do klastra:
+Dodaj persistent volumes do klastra:
 
 ```
 kubectl  create -f ./v1_mysql_persistent.yaml
 ```
 
-sprawdzenie poprawności wykonania
+Sprawdź poprawność wykonania
 
 ```
 kubectl get pvc
 kubectl get pv
 ```
 
-dodanie instancji serwera MySQL:
+Dodaj instancję serwera MySQL:
 
 ```
 kubectl create -f ./v1_mysql.yaml
 ```
 
-sprawdzenie poprawności instalacji :
+Sprawdź poprawność instalacji :
 
 ```
 kubectl get pod
 kubectl get deployment
 ```
 
-sprawdzenie adresu ip bazy MySQL i zalogowanie do bazy
+Sprawdź adres ip bazy MySQL i zaloguj się do bazy
 
 ```
 kubectl get pod -o wide
 kubectl run mysql-client --image=mysql:5.6 -i -t --rm --restart=Never --  mysql -h [ip poda] -u root -ppassword
 ```
 
-sprawdzenie poprawności działania bazy danych:
+Sprawdź poprawność działania bazy danych:
 
 ```
 mysql> SHOW DATABASES;
@@ -101,7 +103,7 @@ mysql> SELECT nazwa FROM nazwa;
 mysql> exit;
 ```
 
-restart poda i sprawdzenie poprawności działania bazy danych
+Zrestartuj poda i sprawdź poprawnośc działania bazy danych:
 
 ```
 kubectl get pods
@@ -114,13 +116,13 @@ mysql> SELECT nazwa FROM nazwa;
 mysql> exit;
 ```
 
-uruchomienie usługi serwujacej usługe MySQL
+Uruchom usługę serwującą usługę MySQL:
 
 ```
 kubectl create -f ./v1_mysql_service.yaml
 ```
 
-sprawdzenie konfiguracji usługi:
+Sprawdź konfigurację usługi:
 
 ```
 kubectl get svc
@@ -128,20 +130,20 @@ kubectl run mysql-client --image=mysql:5.6 -i -t --rm --restart=Never --  mysql 
 mysql> SHOW DATABASES;
 ```
 
-na drugiej konsoli (na pierwszej zostaje aktywny klient MySQL) logowanie do klastra:
+Korzystając z drugiej konsoli (na pierwszej pozostaw aktywnego klienta MySQL) zaloguj się ponownie do klastra:
 
 ```
 ssh userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/id_rsa
 ```
 
-restart poda:
+Zrestartuj pod MySQL:
 
 ```
 kubectl get pod
 kubectl delete pod [nazwa poda]
 ```
 
-powrót na konsolę z klientem MySQL:
+Powróć do konsoli z klientem MySQL:
 
 ```
 mysql> SHOW DATABASES;
@@ -151,46 +153,52 @@ mysql> exit;
 Poprawność i zasadność używania obiektu typu 'service' zostala potwierdzona.
 
 
-instalacja instancji wordpressa:
+#####Instalacja instancji wordpressa:
 
 ```
-kubectl create -f ./v1_wordpress.yaml
+kubectl create -f ./wordpress.yaml
 ```
 
-instalacja usługi serwujacej aplikację wordpress na świat:
+Zainstaluj usługę serwującą aplikację worpress na świat:
 
 ```
-kubectl create -f ./v1_wordpress_service.yaml
+kubectl create -f ./wordpress_service.yaml
 ```
 
-sprawdzenie zewnętrznego adresu ip usługi:
+Sprawdź publiczny adres IP wystawionej usługi:
 
 ```
 kubectl get svc
 ```
 
-na lokalnym komputerze, w trybie graficznym połączenie z przeglądarką z 
+Sprawdź na lokalnym komputerze, w trybie graficznym połączenie z przeglądarką z 
 [EXTERNAL-IP] usługi wordpress
 
-przeprowadzić podstawową konfigurację usługi worpdress
-restart poda:
+Przeprowadź podstawową konfigurację usługi worpdress
+
+Zrestartuj pod wordpress: 
 
 ```
 kubectl delete pod [nazwa poda]
 ```
 
-przeprowadzić update wordpressa do wersji 4.7.4 z panelu sterowania
-restart poda
-zalogować się ponownie do panelu sterowania wordpressa
+Przeprowadź update aplikacji wordpress do wersji 4.7.4 za pomocą panelu administracyjnego wordpress.
+
+Zrestartuj pod wordpress:
+
+```
+```
+
+Zalguj się ponownie do panelu sterowania aplikacji wordpress i sprawdź wersję aplikacji.
 
 
-dodanie persistent volume do wordpresa
+Dodaj persistent volune do kontenera, w którym uruchomiona jest aplikacja wordpress:
 
 ```
 kubectl create -f ./v1_wordpress_persistent.yaml
 ```
 
-podłączenie persistent volume do instancji wordpressa:
+Podłącz persistent volume do aplikacji wordpress:
 
 ```
 kubectl edit deployment wordpress
@@ -205,21 +213,21 @@ kubectl edit deployment wordpress
           claimName: wp-pv-claim
 ```
 
-zalogowac się do panelu sterowania wordpress
-przeprowadzić update do wersji 4.7.4
+Zaloguj się ponownie do panelu sterowania aplikacji wordpress i przeprowadź
+update aplikacji do wersji 4.7.4
 
-restart poda:
+Zrestartuj pod z aplikacją wordpress:
 
 ```
 kubectl get pod
 kubectl delete pod [nazwa poda]
 ```
 
-Sprawdź panel sterowania swojej instancji wordpressa
+Ponownie przejdź do panelu sterowania aplikacji wordpress, jakie zauważyłeś/aś
+różnice w stusunku do poprzedniej operacji restartu poda z aplikacją wordpress?
 
 
-
-dodatkowe komendy
+#####Dodatkowe komendy dla wytrwałych:
 
 ```
 kubectl describe svc wordpress
