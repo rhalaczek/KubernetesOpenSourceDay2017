@@ -14,7 +14,7 @@ Zaloguj się na host master swojego klastra Kubernetes:
 			Login: userkubelaba<NUMER>
 		- 26-50	lpkubelabb<NUMER>mgmt.northeurope.cloudapp.azure.com
 			-Login: userkubelabb<NUMER> 
-	- [Klucz prywatny] (https://www.dropbox.com/s/g2of30pq01v5b1r/kubernetes_rsa_id?dl=0) - hasło zostanie przekazane przez instruktora
+	- [Klucz prywatny](https://www.dropbox.com/s/g2of30pq01v5b1r/kubernetes_rsa_id?dl=0) - hasło zostanie przekazane przez instruktora
 		- zmień uprawnienia do klucza
 ```
 chmod 600 kubernetes_rsa_id
@@ -25,7 +25,7 @@ chmod 600 kubernetes_rsa_id
 Zaloguj się do serwera pełniącego role mastera w klastrze Kubernetes:
 
 ```
-ssh userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/kubernetes_rsa_id
+ssh userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i kubernetes_rsa_id
 ```
 
 #### Przygotuj środowisko do pracy:
@@ -39,9 +39,8 @@ git clone https://github.com/rhalaczek/KubernetesOpenSourceDay2017
 cd ./KubernetesOpenSourceDay2017 
 ```
 
-Przygotuj interfejs webowy 
+#### Przygotuj interfejs webowy 
 	- na serwerze master klastra:
-
 ```
 kubectl proxy --port=8443 &
 exit
@@ -50,20 +49,20 @@ exit
 	- na lokalnej maszynie
 
 ```
-ssh -L 2222:localhost:8443 -N userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/kubernetes_rsa_id &
+ssh -L 2222:localhost:8443 -N userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i kubernetes_rsa_id &
 ```
 
 Uruchom przeglądarkę :
 http://localhost:2222/ui
 
-####Rozpocznij ćwiczenie
+#### Rozpocznij ćwiczenie
 
-#####Instalacja instancji bazy danych MySQL:
+##### Instalacja instancji bazy danych MySQL:
 
 Ponownie zaloguj do serwera pełniącego role mastera w klastrze Kubernetes:
 
 ```
-ssh userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/kubernetes_rsa_id
+ssh userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i kubernetes_rsa_id
 ```
 
 Dodaj persistent volumes do klastra:
@@ -96,7 +95,7 @@ Sprawdź adres ip bazy MySQL i zaloguj się do bazy
 
 ```
 kubectl get pod -o wide
-kubectl run mysql-client --image=mysql:5.6 -i -t --rm --restart=Never --  mysql -h [ip poda] -u root -ppassword
+kubectl run mysql-client --image=mysql:5.6 -i -t --rm --restart=Never --  mysql -h [pod ip] -u root -ppassword
 ```
 
 Sprawdź poprawność działania bazy danych:
@@ -117,7 +116,7 @@ Usuń pod mysql i sprawdź poprawnośc działania bazy danych:
 kubectl get pods
 kubectl delete pod [nazwa poda]
 kubectl get pod -o wide
-kubectl run mysql-client --image=mysql:5.6 -i -t --rm --restart=Never --  mysql -h [ip poda] -u root -ppassword
+kubectl run mysql-client --image=mysql:5.6 -i -t --rm --restart=Never --  mysql -h [pod ip] -u root -ppassword
 mysql> SHOW DATABASES;
 mysql> USE testABC;
 mysql> SELECT nazwa FROM nazwa;
@@ -134,21 +133,21 @@ Sprawdź konfigurację usługi:
 
 ```
 kubectl get svc
-kubectl run mysql-client --image=mysql:5.6 -i -t --rm --restart=Never --  mysql -h [ip service] -u root -ppassword
+kubectl run mysql-client --image=mysql:5.6 -i -t --rm --restart=Never --  mysql -h [service ip] -u root -ppassword
 mysql> SHOW DATABASES;
 ```
 
 Korzystając z drugiej konsoli (na pierwszej pozostaw aktywnego klienta MySQL) zaloguj się ponownie do klastra:
 
 ```
-ssh userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/kubernetes_rsa_id
+ssh userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i kubernetes_rsa_id
 ```
 
 Usuń pod MySQL:
 
 ```
 kubectl get pod
-kubectl delete pod [nazwa poda]
+kubectl delete pod [pod nazwa]
 ```
 
 Powróć do konsoli z klientem MySQL:
@@ -161,7 +160,7 @@ mysql> exit;
 Poprawność i zasadność używania obiektu typu 'service' zostala potwierdzona.
 
 
-#####Instalacja instancji wordpressa:
+##### Instalacja instancji wordpressa:
 
 ```
 kubectl create -f wordpress.yaml
@@ -189,7 +188,7 @@ Usuń pod wordpress:
 
 ```
 kubectl get pod
-kubectl delete pod [nazwa poda]
+kubectl delete pod [pod nazwa]
 ```
 
 Przeprowadź update aplikacji wordpress do wersji 4.7.4 za pomocą panelu administracyjnego wordpress.
@@ -198,7 +197,7 @@ Zrestartuj pod wordpress:
 
 ```
 kubectl get pod
-kubectl delete pod [nazwa]
+kubectl delete pod [pod nazwa]
 ```
 
 Zaloguj się ponownie do panelu sterowania aplikacji wordpress i sprawdź wersję aplikacji.
@@ -232,19 +231,19 @@ Zrestartuj pod z aplikacją wordpress:
 
 ```
 kubectl get pod
-kubectl delete pod [nazwa poda]
+kubectl delete pod [pod nazwa]
 ```
 
 Ponownie przejdź do panelu sterowania aplikacji wordpress, jakie zauważyłeś/aś
 różnice w stusunku do poprzedniej operacji restartu poda z aplikacją wordpress?
 
 
-#####Dodatkowe komendy dla wytrwałych:
+##### Dodatkowe komendy dla wytrwałych:
 
 ```
 kubectl describe svc wordpress
-kubctl logs [nazwa poda]
-kubectl exec -it [nazwa poda] -- /bin/bash
+kubctl logs [pod nazwa]
+kubectl exec -it [pod nazwa] -- /bin/bash
 printenv
 ```
 
