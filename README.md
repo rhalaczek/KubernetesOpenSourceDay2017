@@ -12,13 +12,17 @@ Zaloguj się na host master swojego klastra Kubernetes:
 			Login: userkubelaba<NUMER>
 		- 26-50	lpkubelabb<NUMER>mgmt.northeurope.cloudapp.azure.com
 			-Login: userkubelabb<NUMER> 
-	-[Klucz prywatny](https://www.dropbox.com/s/g2of30pq01v5b1r/kubernetes_rsa_id?dl=0) - hasło zostanie przekazane przez instruktora
+	- [Klucz prywatny](https://www.dropbox.com/s/g2of30pq01v5b1r/kubernetes_rsa_id?dl=0) - hasło zostanie przekazane przez instruktora
+		- zmień uprawnienia do klucza
+```
+
+```
 
 ###Ćwiczenie
 Zaloguj się do serwera pełniącego role mastera w klastrze Kubernetes:
 
 ```
-ssh userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/id_rsa
+ssh userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/kubernetes_rsa_id
 ```
 
 ####Przygotuj środowisko do pracy:
@@ -42,7 +46,7 @@ exit
 Na lokalnej maszynie
 
 ```
-ssh -L 2222:localhost:8443 -N userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/id_rsa &
+ssh -L 2222:localhost:8443 -N userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/kubernetes_rsa_id &
 ```
 
 Uruchom przeglądarkę :
@@ -55,13 +59,13 @@ http://localhost:2222/ui
 Ponownie zaloguj do serwera pełniącego role mastera w klastrze Kubernetes:
 
 ```
-ssh userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/id_rsa
+ssh userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/kubernetes_rsa_id
 ```
 
 Dodaj persistent volumes do klastra:
 
 ```
-kubectl  create -f ./v1_mysql_persistent.yaml
+kubectl  create -f https://github.com/rhalaczek/KubernetesOpenSourceDay2017/blob/master/mysql_persistent.yaml
 ```
 
 Sprawdź poprawność wykonania
@@ -74,7 +78,7 @@ kubectl get pv
 Dodaj instancję serwera MySQL:
 
 ```
-kubectl create -f ./v1_mysql.yaml
+kubectl create -f https://github.com/rhalaczek/KubernetesOpenSourceDay2017/blob/master/mysql.yaml
 ```
 
 Sprawdź poprawność instalacji :
@@ -119,7 +123,7 @@ mysql> exit;
 Uruchom usługę serwującą usługę MySQL:
 
 ```
-kubectl create -f ./v1_mysql_service.yaml
+kubectl create -f https://github.com/rhalaczek/KubernetesOpenSourceDay2017/blob/master/mysql_service.yaml
 ```
 
 Sprawdź konfigurację usługi:
@@ -133,7 +137,7 @@ mysql> SHOW DATABASES;
 Korzystając z drugiej konsoli (na pierwszej pozostaw aktywnego klienta MySQL) zaloguj się ponownie do klastra:
 
 ```
-ssh userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/id_rsa
+ssh userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/kubernetes_rsa_id
 ```
 
 Zrestartuj pod MySQL:
@@ -156,13 +160,13 @@ Poprawność i zasadność używania obiektu typu 'service' zostala potwierdzona
 #####Instalacja instancji wordpressa:
 
 ```
-kubectl create -f ./wordpress.yaml
+kubectl create -f https://github.com/rhalaczek/KubernetesOpenSourceDay2017/blob/master/wordpress.yaml
 ```
 
 Zainstaluj usługę serwującą aplikację worpress na świat:
 
 ```
-kubectl create -f ./wordpress_service.yaml
+kubectl create -f https://github.com/rhalaczek/KubernetesOpenSourceDay2017/blob/master/wordpress_service.yaml
 ```
 
 Sprawdź publiczny adres IP wystawionej usługi:
@@ -195,7 +199,7 @@ Zalguj się ponownie do panelu sterowania aplikacji wordpress i sprawdź wersję
 Dodaj persistent volune do kontenera, w którym uruchomiona jest aplikacja wordpress:
 
 ```
-kubectl create -f ./v1_wordpress_persistent.yaml
+kubectl create -f https://github.com/rhalaczek/KubernetesOpenSourceDay2017/blob/master/wordpress_persistent.yaml
 ```
 
 Podłącz persistent volume do aplikacji wordpress:
