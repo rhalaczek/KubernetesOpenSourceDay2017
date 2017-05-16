@@ -6,13 +6,13 @@ w trakcie Open Source Day 2017
 
 ###Przygotowanie
 Zaloguj się na host master swojego klastra Kubernetes:
-	-FQDN:
+	- FQDN:
 		Każdemu użytkownikowi zostal przydzielony osobny klaster.
 		- 01-25  lpkubelaba<NUMER>mgmt.northeurope.cloudapp.azure.com
 			Login: userkubelaba<NUMER>
 		- 26-50	lpkubelabb<NUMER>mgmt.northeurope.cloudapp.azure.com
 			-Login: userkubelabb<NUMER> 
-	-[Klucz prywatny](https://github.com) - hasło zostanie przekazane przez instruktora
+	-[Klucz prywatny](https://www.dropbox.com/s/g2of30pq01v5b1r/kubernetes_rsa_id?dl=0) - hasło zostanie przekazane przez instruktora
 
 ###Ćwiczenie
 Zaloguj się do serwera pełniącego role mastera w klastrze Kubernetes:
@@ -25,7 +25,7 @@ ssh userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/i
 
 ```
 echo "source <(kubectl completion bash)" >> ~/.bashrc
-source <(kubectl completion bash)"
+source <(kubectl completion bash)
 mkdir ~/warsztaty
 cd ~/warsztaty
 git clone https://github.com/rhalaczek/KubernetesOpenSourceDay2017 
