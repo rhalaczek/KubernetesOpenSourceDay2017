@@ -94,7 +94,8 @@ Sprawdź adres ip bazy MySQL i zaloguj się do bazy
 
 ```
 kubectl get pod -o wide
-kubectl run mysql-client --image=mysql:5.6 -i -t --rm --restart=Never --  mysql -h [pod ip] -u root -ppassword
+kubectl run mysql-client --image=mysql:5.6 -i -t --rm --restart=Never /
+	--  mysql -h [pod ip] -u root -ppassword
 ```
 
 Sprawdź poprawność działania bazy danych:
@@ -115,7 +116,8 @@ Usuń pod mysql i sprawdź poprawnośc działania bazy danych:
 kubectl get pods
 kubectl delete pod [nazwa poda]
 kubectl get pod -o wide
-kubectl run mysql-client --image=mysql:5.6 -i -t --rm --restart=Never --  mysql -h [pod ip] -u root -ppassword
+kubectl run mysql-client --image=mysql:5.6 -i -t --rm --restart=Never /
+	--  mysql -h [pod ip] -u root -ppassword
 mysql> SHOW DATABASES;
 mysql> USE testABC;
 mysql> SELECT nazwa FROM nazwa;
@@ -132,7 +134,8 @@ Sprawdź konfigurację usługi:
 
 ```
 kubectl get svc
-kubectl run mysql-client --image=mysql:5.6 -i -t --rm --restart=Never --  mysql -h [service ip] -u root -ppassword
+kubectl run mysql-client --image=mysql:5.6 -i -t --rm --restart=Never /
+	--  mysql -h [service ip] -u root -ppassword
 mysql> SHOW DATABASES;
 ```
 
