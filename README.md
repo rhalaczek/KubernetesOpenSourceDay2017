@@ -14,11 +14,9 @@ Zaloguj się na host master swojego klastra Kubernetes:
 			Login: userkubelaba<NUMER>
 		- 26-50	lpkubelabb<NUMER>mgmt.northeurope.cloudapp.azure.com
 			-Login: userkubelabb<NUMER> 
-	- [Klucz prywatny](https://www.dropbox.com/s/g2of30pq01v5b1r/kubernetes_rsa_id?dl=0) - hasło zostanie przekazane przez instruktora
-		- zmień uprawnienia do klucza
-```
-chmod 600 kubernetes_rsa_id
-```
+	- [Klucz prywatny](https://www.dropbox.com/s/g2of30pq01v5b1r/kubernetes_rsa_id?dl=0) - hasło zostanie 
+	przekazane przez instruktora
+		- zmień uprawnienia do klucza: chmod 600 kubernetes_rsa_id
 
 ### Ćwiczenie
 
@@ -49,7 +47,8 @@ exit
 	- na lokalnej maszynie
 
 ```
-ssh -L 2222:localhost:8443 -N userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i kubernetes_rsa_id &
+ssh -L 2222:localhost:8443 -N userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com /
+	-i kubernetes_rsa_id &
 ```
 
 Uruchom przeglądarkę :
