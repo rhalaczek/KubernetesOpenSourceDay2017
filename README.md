@@ -1,11 +1,13 @@
-##**Warsztaty** Orkiestracja kontenerów z Kubernetes Open Source Day 2017
+## **Warsztaty** Orkiestracja kontenerów z Kubernetes Open Source Day 2017
 
 Repozytorium przchowujące konfigurację środowiska warsztatowego
 na potrzeby warsztatów Orkiestracja kontenerów z Kubernetes prowadzonych
 w trakcie Open Source Day 2017
 
-###Przygotowanie
+### Przygotowanie
+
 Zaloguj się na host master swojego klastra Kubernetes:
+	
 	- FQDN:
 		Każdemu użytkownikowi zostal przydzielony osobny klaster.
 		- 01-25  lpkubelaba<NUMER>mgmt.northeurope.cloudapp.azure.com
@@ -15,17 +17,18 @@ Zaloguj się na host master swojego klastra Kubernetes:
 	- [Klucz prywatny](https://www.dropbox.com/s/g2of30pq01v5b1r/kubernetes_rsa_id?dl=0) - hasło zostanie przekazane przez instruktora
 		- zmień uprawnienia do klucza
 ```
-
+chmod 600 kubernetes_rsa_id
 ```
 
-###Ćwiczenie
+### Ćwiczenie
+
 Zaloguj się do serwera pełniącego role mastera w klastrze Kubernetes:
 
 ```
 ssh userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/kubernetes_rsa_id
 ```
 
-####Przygotuj środowisko do pracy:
+#### Przygotuj środowisko do pracy:
 
 ```
 echo "source <(kubectl completion bash)" >> ~/.bashrc
@@ -36,15 +39,15 @@ git clone https://github.com/rhalaczek/KubernetesOpenSourceDay2017
 cd ./KubernetesOpenSourceDay2017 
 ```
 
-Przygotuj interfejs webowy
-Na serwerze master klastra:
+Przygotuj interfejs webowy 
+	- na serwerze master klastra:
 
 ```
 kubectl proxy --port=8443 &
 exit
 ```
 
-Na lokalnej maszynie
+	- na lokalnej maszynie
 
 ```
 ssh -L 2222:localhost:8443 -N userkubelaba01@lpkubelaba01mgmt.northeurope.cloudapp.azure.com -i ./Klucze/kubernetes_rsa_id &
